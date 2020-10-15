@@ -13,54 +13,16 @@
           />
         </v-col>
       </v-col>
-      <v-dialog fullscreen>
-        <template v-slot:activator="{ on }">
-          <v-col cols="6" v-on="on">
-            <v-img
-              contain
-              :src="
-                'http://192.168.1.152:8085/' +
-                getContent.product.productImage[midPicture]
-              "
-              height="500"
-            />
-          </v-col>
-        </template>
-        <v-container>
-          <v-row align="center" justify="center">
-            <!-- WTF THIS COLS 1-4-1??? -->
-            <v-col cols="1">
-              <v-btn text><v-icon>keyboard_arrow_left</v-icon></v-btn>
-            </v-col>
-            <v-col cols="4">
-              <v-img
-                contain
-                height="77vh"
-                :src="
-                  'http://192.168.1.152:8085/' +
-                  getContent.product.productImage[midPicture]
-                "
-              ></v-img>
-            </v-col>
-            <v-col cols="1">
-              <v-btn text><v-icon>keyboard_arrow_right</v-icon></v-btn>
-            </v-col>
-          </v-row>
-          <v-row justify="center" no-gutters>
-            <v-col
-              cols="1"
-              v-for="(picture, index) in getContent.product.productImage"
-              :key="index"
-            >
-              <v-img
-                contain
-                height="15vh"
-                :src="'http://192.168.1.152:8085/' + picture"
-              ></v-img
-            ></v-col>
-          </v-row>
-        </v-container>
-      </v-dialog>
+      <v-col cols="6">
+        <v-img
+          contain
+          :src="
+            'http://192.168.1.152:8085/' +
+            getContent.product.productImage[midPicture]
+          "
+          height="500"
+        />
+      </v-col>
       <v-col cols="4">
         <v-card outlined>
           <v-card-title>{{ getContent.group.name }}</v-card-title>
