@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import settingsMenu from "../components/addProduct/menu";
+import settingsMenu from "../components/moderator/menu";
 export default {
   components: {
     settingsMenu,

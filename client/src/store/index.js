@@ -47,7 +47,7 @@ export default new Vuex.Store({
       try {
         const resp = await connectServices.addproductGroup(group)
         commit('empty')
-        console.log(resp)
+        return resp
       } catch (err) {
         console.log(err)
       }

@@ -143,7 +143,7 @@ export default {
           fd.append(key, this.product[key]);
         }
         const resp = await this.$store.dispatch("addProduct", fd);
-        if (resp.status === 200) this.$refs.addproduct_form.reset();
+        if (resp.status === 201) this.$refs.addproduct_form.reset();
       }
     },
     selectedGroup(index) {

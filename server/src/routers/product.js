@@ -62,7 +62,7 @@ router.post('/product', upload.array('productImage', 5), async (req, res, next) 
             }
             await checkStock.save()
         }
-        res.send()
+        res.status(201).send()
     } catch (err) {
         res.send(err)
     }

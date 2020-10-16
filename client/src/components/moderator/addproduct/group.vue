@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import { navcontent } from "../../navcontent";
+import { navcontent } from "../../../navcontent";
 export default {
   mixins: [navcontent],
   data() {
@@ -76,9 +76,10 @@ export default {
     };
   },
   methods: {
-    submit() {
+    async submit() {
       if (this.$refs.addgroup_form.validate()) {
-        this.$store.dispatch("addProductGroup", this.group);
+        const resp = await this.$store.dispatch("addProductGroup", this.group);
+        if (resp.status === 201) this.$refs.addgroup_form.reset();
       }
     },
   },
