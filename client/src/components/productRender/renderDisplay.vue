@@ -25,33 +25,45 @@
             />
           </v-col>
         </v-row>
+        <v-row justify="center">
+          <p>Index: {{ $route.params.product }}</p>
+        </v-row>
       </v-col>
       <v-col cols="4">
-        <v-card outlined>
+        <v-card flat>
           <v-card-title>{{ getContent.group.name }}</v-card-title>
           <v-card-subtitle>{{ getContent.group.price }} HUF</v-card-subtitle>
-          <v-col>
-            <v-select
-              :items="getContent.product.stock"
-              item-text="size"
-              item-value="quantity"
-              filled
-              label="Size"
-              dense
-            ></v-select>
-          </v-col>
-          <v-card-actions>
+          <v-card-text>
             <v-row>
               <v-col cols="12">
+                <p>Color</p>
                 <v-btn
                   class="mr-1"
                   height="31px"
                   min-width="31px"
+                  width="31"
                   v-for="(product, index) in getContent.group.product"
                   :key="index"
                   :to="product.fullindex"
                   :color="product.color.toLowerCase()"
-                ></v-btn>
+                >
+                  <v-icon
+                    v-if="$route.params.product == product.fullindex"
+                    right
+                    class="pl-2 pt-4"
+                    color="green"
+                    >done</v-icon
+                  ></v-btn
+                >
+              </v-col>
+              <v-col cols="12">
+                <v-select
+                  :items="getContent.product.stock"
+                  item-text="size"
+                  item-value="quantity"
+                  solo
+                  label="Choose size"
+                ></v-select>
               </v-col>
               <v-col>
                 <v-btn width="100%" outlined color="success"
@@ -59,7 +71,7 @@
                 >
               </v-col>
             </v-row>
-          </v-card-actions>
+          </v-card-text>
         </v-card>
       </v-col>
     </v-row>
@@ -88,3 +100,4 @@ export default {
   },
 };
 </script>
+
