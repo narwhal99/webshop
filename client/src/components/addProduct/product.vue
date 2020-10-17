@@ -78,29 +78,34 @@
           </v-form>
         </v-card>
       </v-col>
-      <v-col lg="3" xl="6" v-for="content in getProduct" :key="content._id">
-        <h1>Termék család:</h1>
-        <v-card class="my-6">
-          <v-img
-            contain
-            height="300"
-            width="300"
-            :src="
-              'http://192.168.1.152:8085/' + content.product[0].productImage[0]
-            "
-          ></v-img>
-          <v-card-title>{{ content.name }}</v-card-title>
-          <v-card-text>
-            <v-btn
-              class="mr-1"
-              v-for="(product, index) in content.product"
-              :key="index"
-              height="31px"
-              min-width="31px"
-              :color="product.color.toLowerCase()"
-            ></v-btn>
-          </v-card-text>
-        </v-card>
+      <v-col v-if="getProduct" cols="6">
+        <h1>Termék család</h1>
+        <v-row v-if="getProduct[0].product.length > 0">
+          <v-col
+            cols="6"
+            v-for="product in getProduct[0].product"
+            :key="product._id"
+          >
+            <v-card>
+              <v-img
+                :src="'http://192.168.1.152:8085/' + product.productImage[0]"
+              />
+              <v-card-title> {{ getProduct[0].name }}</v-card-title>
+              <v-card-subtitle>{{ getProduct[0].price }} HUF</v-card-subtitle>
+              <v-card-text>
+                <p>Color: {{ product.color }}</p>
+              </v-card-text>
+            </v-card>
+          </v-col>
+        </v-row>
+        <v-row v-else>
+          <v-col>
+            <h2>Nincs egy termék sem hozzárendelve!</h2>
+            <h4>Név: {{ getProduct[0].name }}</h4>
+            <h4>Ár: {{ getProduct[0].price }} HUF</h4>
+            <h4>Tag: {{ getProduct[0].tag }}</h4>
+          </v-col>
+        </v-row>
       </v-col>
     </v-row>
   </v-container>

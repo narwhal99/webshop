@@ -14,14 +14,13 @@
               :src="'http://192.168.1.152:8085/' + picture"
             />
           </v-col>
-          <v-col cols="8">
             <v-img
               contain
               :src="
                 'http://192.168.1.152:8085/' +
                 getContent.product.productImage[midPicture]
               "
-              height="100vh"
+              height="80vh"
             />
           </v-col>
         </v-row>
@@ -31,8 +30,12 @@
       </v-col>
       <v-col cols="4">
         <v-card flat>
-          <v-card-title>{{ getContent.group.name }}</v-card-title>
-          <v-card-subtitle>{{ getContent.group.price }} HUF</v-card-subtitle>
+          <v-card-title
+            ><h1>{{ getContent.group.name }}</h1></v-card-title
+          >
+          <v-card-subtitle
+            ><h2>{{ getContent.group.price }},00 HUF</h2></v-card-subtitle
+          >
           <v-card-text>
             <v-row>
               <v-col cols="12">
@@ -88,6 +91,7 @@ export default {
   watch: {
     $route(to) {
       this.$store.dispatch("getProduct", to.params.product);
+      this.midPicture = 0
     },
   },
   created() {

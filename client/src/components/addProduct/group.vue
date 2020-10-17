@@ -39,7 +39,6 @@
                   :items="getTags"
                   chips
                   label="Tags"
-                  hide-no-data
                   hide-selected
                   multiple
                   hide-details
