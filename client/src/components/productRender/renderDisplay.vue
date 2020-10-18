@@ -14,13 +14,14 @@
               :src="'http://192.168.1.152:8085/' + picture"
             />
           </v-col>
+          <v-col cols="8">
             <v-img
               contain
               :src="
                 'http://192.168.1.152:8085/' +
                 getContent.product.productImage[midPicture]
               "
-              height="80vh"
+              height="100vh"
             />
           </v-col>
         </v-row>
