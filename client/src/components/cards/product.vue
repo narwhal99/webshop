@@ -1,43 +1,24 @@
 <template>
-  <v-card
-    outlined
-    :to="`/product/${product.index}-${product.product[productSelectedIndex].index}`"
-  >
-    <v-img
-      contain
-      :src="
-        'http://192.168.1.152:8085/' +
-        product.product[productSelectedIndex].productImage[0]
-      "
-      height="200"
-    />
-    <v-card-title class="justify-center">{{ product.name }}</v-card-title>
-    <v-card-subtitle class="text-center"
-      >{{ product.price }} HUF</v-card-subtitle
-    >
-    <v-card-text>
-      <v-btn
-        class="mr-1"
-        v-for="(product, index) in product.product"
-        :key="index"
-        height="31px"
-        min-width="31px"
-        :color="product.color.toLowerCase()"
-        @click="productSelectedIndex = index"
-      ></v-btn>
-    </v-card-text>
-  </v-card>
+  <v-container>
+    <v-card flat :to="`/product/${product.fullindex}`">
+      <v-img
+        :src="'http://192.168.1.152:8085/' + product.productImage[0]"
+        height="60vh"
+      />
+      <v-card-title class="justify-center">{{ group_name }}</v-card-title>
+      <v-card-subtitle class="text-center"
+        >{{ group_price }},00 HUF</v-card-subtitle
+      >
+    </v-card>
+  </v-container>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      productSelectedIndex: 0,
-    };
-  },
   props: {
-    product: Object,
+    group_name: String,
+    group_price: Number,
+    product: null,
   },
 };
 </script>
