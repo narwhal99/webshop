@@ -77,7 +77,7 @@ export default {
   methods: {
     submit() {
       if (this.$refs.addgroup_form.validate()) {
-        this.$store.dispatch("addProductGroup", this.group);
+        this.$store.dispatch("Group", this.group);
       }
     },
   },

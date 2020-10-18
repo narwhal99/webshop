@@ -91,7 +91,7 @@ export default {
   watch: {
     $route(to) {
       this.$store.dispatch("getProduct", to.params.product);
-      this.midPicture = 0
+      this.midPicture = 0;
     },
   },
   created() {
