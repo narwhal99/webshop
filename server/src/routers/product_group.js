@@ -26,6 +26,19 @@ router.get('/product-group/index', async (req, res) => {
     }
 })
 
+//get all group-product
+router.get('/product-group/all', async (req, res) => {
+    try {
+        const products = await Product_group.find({}).populate({
+            path: "product",
+            model: "Product"
+        })
+        res.send(products)
+    } catch (e) {
+        res.send(e)
+    }
+})
+
 //get group by index
 router.get('/product-group', async (req, res) => {
     try {

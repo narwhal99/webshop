@@ -34,5 +34,8 @@ export default {
                 index: index
             }
         })
+    },
+    geteveryproduct_group() {
+        return Api().get('product-group/all')
     }
 }

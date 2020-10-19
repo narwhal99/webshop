@@ -83,6 +83,14 @@ export default new Vuex.Store({
       } catch (err) {
         console.log(err)
       }
+    },
+    async geteveryproduct_group({ commit }) {
+      try {
+        const resp = await connectServices.geteveryproduct_group()
+        commit('auth_content', resp.data)
+      } catch (err) {
+        console.log(err)
+      }
     }
   },
 })
