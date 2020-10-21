@@ -91,6 +91,22 @@ export default new Vuex.Store({
       } catch (err) {
         console.log(err)
       }
+    },
+    async deleteimg({ commit }, img) {
+      try {
+        const resp = await connectServices.deleteimg(img)
+        commit('auth_content', resp.data)
+      } catch (err) {
+        console.log(err)
+      }
+    },
+    async uploadImg({ commit }, img) {
+      try {
+        const resp = await connectServices.uploadImg(img)
+        commit('auth_content', resp.data)
+      } catch (err) {
+        console.log(err)
+      }
     }
   },
 })

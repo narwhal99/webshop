@@ -30,7 +30,6 @@ const upload = multer({
 });
 
 router.post('/product', upload.array('productImage', 5), async (req, res, next) => {
-    console.log(req.files)
     try {
         const group = await Product_group.findOne({ "index": req.body.group_index })
         const checkStock = await Product.findOne({ "index": req.body.index })
@@ -84,5 +83,36 @@ router.get('/product', async (req, res) => {
     }
 })
 
+router.delete('/image', async (req, res) => {
+    try {
+        const product = await Product.findOne({ _id: req.body.img.product._id })
+        await product.productImage.splice(req.body.img.index, 1)
+        await product.save()
+        const product_group = await Product_group.find({}).populate({
+            path: "product",
+            model: "Product"
+        })
+        res.send(product_group)
+    } catch (err) {
+        res.send(err)
+    }
+})
+
+router.patch('/image', upload.array('productImage', 5), async (req, res) => {
+    try {
+        const product = await Product.findOne({ _id: req.body.editedProduct })
+        await req.files.map(photo =>
+            product.productImage.push(photo.path))
+        await product.save()
+        const product_group = await Product_group.find({}).populate({
+            path: "product",
+            model: "Product"
+        })
+        res.send(product_group)
+    } catch (err) {
+        console.log(err)
+    }
+    // productImage: req.files.map(photo => photo.path),
+})
 
 module.exports = router

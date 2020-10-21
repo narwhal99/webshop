@@ -37,5 +37,17 @@ export default {
     },
     geteveryproduct_group() {
         return Api().get('product-group/all')
+    },
+    deleteimg(img) {
+        return Api().delete('image', {
+            data: { img: img }
+        })
+    },
+    uploadImg(img) {
+        return Api().patch('image', img, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
     }
 }

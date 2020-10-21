@@ -43,7 +43,7 @@
       </template>
     </v-data-table>
     <h1 v-else>Nincs adat</h1>
-    <v-dialog v-model="picturedialog" width="500">
+    <v-dialog v-model="editedGroupDialog" width="500">
       <v-card dark>
         <v-card-title>Product group edit</v-card-title>
         <v-card-text>
@@ -52,14 +52,14 @@
               <v-text-field
                 outlined
                 label="Name"
-                v-model="editProductGroup.name"
+                v-model="editedGroup.name"
               ></v-text-field>
             </v-col>
             <v-col>
               <v-text-field
                 outlined
                 label="Price"
-                v-model="editProductGroup.price"
+                v-model="editedGroup.price"
                 type="Number"
               ></v-text-field>
             </v-col>
@@ -69,15 +69,11 @@
               <v-text-field
                 outlined
                 label="index"
-                v-model="editProductGroup.index"
+                v-model="editedGroup.index"
               ></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field
-                outlined
-                label="Tags"
-                v-model="editProductGroup.tag"
-              >
+              <v-text-field outlined label="Tags" v-model="editedGroup.tag">
               </v-text-field>
             </v-col>
           </v-row>
@@ -92,6 +88,7 @@
     </v-dialog>
     <v-dialog v-model="editStockDialog" width="500">
       <v-data-table
+        dark
         hide-default-footer
         :items="editProductStock"
         :headers="headers_stock"
@@ -101,6 +98,42 @@
           <v-icon @click="deletestock(item)">mdi-delete</v-icon>
         </template>
       </v-data-table>
+    </v-dialog>
+    <v-dialog v-model="editedPictureDialog">
+      <v-card>
+        <v-col>
+          <v-row no-gutters justify="center">
+            <v-card
+              class="mr-3"
+              width="150px"
+              v-for="(image, index) in editedProduct.productImage"
+              :key="index"
+            >
+              <v-img :src="'http://192.168.1.152:8085/' + image" />
+              <v-col>
+                <v-btn
+                  color="error"
+                  @click="deleteimg(index, editedProduct)"
+                  outlined
+                  >Delete</v-btn
+                >
+              </v-col>
+            </v-card>
+          </v-row>
+          <v-card-actions>
+            <v-row>
+              <v-col cols="12">
+                <input multiple type="file" @change="onFileSelected" />
+              </v-col>
+              <v-col>
+                <v-btn color="warning" outlined @click="submitUpload"
+                  >Upload</v-btn
+                >
+              </v-col>
+            </v-row>
+          </v-card-actions>
+        </v-col>
+      </v-card>
     </v-dialog>
   </v-container>
 </template>
@@ -131,26 +164,59 @@ export default {
         { text: "Quantity", value: "quantity" },
         { text: "Actions", value: "actions", sortable: false },
       ],
-      editProductGroup: {},
+      selectedFile: 0,
+      indexpictureselect: [],
+      editedGroup: {},
       editProductStock: [],
-      picturedialog: false,
+      editedProduct: {},
+      editedGroupDialog: false,
       editStockDialog: false,
+      editedPictureDialog: false,
     };
   },
   methods: {
+    submitUpload() {
+      const fd = new FormData();
+      for (let i = 0; i < this.selectedFile.length; i++) {
+        fd.append(
+          "productImage",
+          this.selectedFile[i],
+          this.selectedFile[i].name
+        );
+      }
+      fd.append("editedProduct", this.editedProduct._id);
+      this.$store.dispatch("uploadImg", fd);
+    },
+    onFileSelected(event) {
+      this.selectedFile = event.target.files;
+    },
     formatDate(value) {
       return moment(value).locale("hu").format("llll");
+    },
+    editPicBtn(item) {
+      this.selectedFile = 0;
+      this.editedProduct = Object.assign({}, item);
+      this.editedPictureDialog = true;
     },
     editStockbtn(item) {
       this.editProductStock = item.stock;
       this.editStockDialog = true;
     },
     editGroupbtn(item) {
-      this.editProductGroup = Object.assign({}, item);
-      this.picturedialog = true;
+      this.editedGroup = Object.assign({}, item);
+      this.editedGroupDialog = true;
+    },
+    deleteimg(index, product) {
+      if (confirm("Biztos törölni szeretnéd a képet?")) {
+        try {
+          this.$store.dispatch("deleteimg", { index, product });
+        } catch (err) {
+          console.log(err);
+        }
+      }
     },
     cancelDialog() {
-      (this.picturedialog = false), (this.editProductGroup = {});
+      (this.editedGroupDialog = false), (this.editedGroup = {});
     },
   },
   computed: {
