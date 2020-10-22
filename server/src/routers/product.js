@@ -3,6 +3,10 @@ const router = new express.Router()
 const Product_group = require('../models/product_group')
 const Product = require('../models/product')
 const multer = require('multer')
+const fs = require('fs')
+const { promisify } = require('util')
+
+const unlinkAsync = promisify(fs.unlink)
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -86,6 +90,7 @@ router.get('/product', async (req, res) => {
 router.delete('/image', async (req, res) => {
     try {
         const product = await Product.findOne({ _id: req.body.img.product._id })
+        await unlinkAsync(product.productImage[req.body.img.index])
         await product.productImage.splice(req.body.img.index, 1)
         await product.save()
         const product_group = await Product_group.find({}).populate({
