@@ -19,5 +19,12 @@ const product_groupSchema = new mongoose.Schema({
     tag: Array
 }, { timestamps: true })
 
+product_groupSchema.pre('remove', async function (next) {
+    console.log(this)
+    next()
+})
+
 const product_group = mongoose.model('Product_group', product_groupSchema)
 module.exports = product_group
+
+

@@ -87,6 +87,16 @@ router.get('/product', async (req, res) => {
     }
 })
 
+router.delete('/product', async (req, res) => {
+    try {
+        const product = await Product.findOne({ _id: req.body.product._id })
+        await product.remove()
+        res.send().status(201)
+    } catch (err) {
+        res.send(err)
+    }
+})
+
 router.delete('/image', async (req, res) => {
     try {
         const product = await Product.findOne({ _id: req.body.img.product._id })

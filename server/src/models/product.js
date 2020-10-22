@@ -1,4 +1,7 @@
 const mongoose = require('mongoose')
+const fs = require('fs')
+const { promisify } = require('util')
+const unlinkAsync = promisify(fs.unlink)
 
 const productSchema = new mongoose.Schema({
     index: {
@@ -29,6 +32,13 @@ const productSchema = new mongoose.Schema({
         type: String
     }],
 }, { timestamps: true })
+
+productSchema.pre('remove', async function (next) {
+    this.productImage.map(async (image) => {
+        await unlinkAsync(image)
+    })
+    next()
+})
 
 productSchema.virtual('product_group', {
     ref: 'Product_group',

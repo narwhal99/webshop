@@ -67,13 +67,21 @@ router.get('/product-group/tag', async (req, res) => {
 
 router.patch('/product-group', async (req, res) => {
     try {
-        //Tag update now working v-for v-model limit
         await Product_group.findByIdAndUpdate(req.body.group._id, { name: req.body.group.name, price: req.body.group.price, tag: req.body.group.tag })
         const product_group = await Product_group.find({}).populate({
             path: "product",
             model: "Product"
         })
         res.send(product_group)
+    } catch (err) {
+        res.send(err)
+    }
+})
+
+router.delete('/product-group', async (req, res) => {
+    try {
+        const group = await Product_group.findOne({ _id: req.body.group._id })
+        await group.remove()
     } catch (err) {
         res.send(err)
     }

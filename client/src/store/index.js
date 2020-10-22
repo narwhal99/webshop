@@ -116,6 +116,22 @@ export default new Vuex.Store({
       } catch (err) {
         console.log(err)
       }
+    },
+    async deleteProductGroup({ commit }, group) {
+      try {
+        await connectServices.deleteProductGroup(group)
+        commit('empty')
+      } catch (err) {
+        console.log(err)
+      }
+    },
+    async deleteproduct({ commit }, product) {
+      try {
+        await connectServices.deleteProduct(product)
+        commit('empty')
+      } catch (err) {
+        console.log(err)
+      }
     }
   },
 })

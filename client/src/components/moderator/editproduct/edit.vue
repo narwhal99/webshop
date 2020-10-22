@@ -13,7 +13,7 @@
       }}</template>
       <template v-slot:item.actions="{ item }">
         <v-icon class="mr-3" @click="editGroupbtn(item)">mdi-pencil</v-icon>
-        <v-icon @click="deleteItem(item)">mdi-delete</v-icon>
+        <v-icon @click="deleteProductGroup(item)">mdi-delete</v-icon>
       </template>
       <template v-slot:expanded-item="{ headers, item }">
         <td :colspan="headers.length">
@@ -33,14 +33,14 @@
               <v-icon class="mr-3" @click="editStockbtn(item)"
                 >mdi-archive</v-icon
               >
-              <v-icon @click="deleteItem(item)">mdi-delete</v-icon>
+              <v-icon @click="deleteProduct(item)">mdi-delete</v-icon>
             </template>
           </v-data-table>
         </td>
       </template>
     </v-data-table>
     <h1 v-else>Nincs adat</h1>
-    <v-dialog v-model="editedGroupDialog" width="500">
+    <v-dialog dark v-model="editedGroupDialog" width="500">
       <v-card>
         <v-card-title>Product group edit</v-card-title>
         <v-card-text>
@@ -110,7 +110,7 @@
         </template>
       </v-data-table>
     </v-dialog>
-    <v-dialog v-model="editedPictureDialog">
+    <v-dialog dark v-model="editedPictureDialog">
       <v-card>
         <v-col>
           <v-row no-gutters justify="center">
@@ -197,6 +197,7 @@ export default {
       }
       fd.append("editedProduct", this.editedProduct._id);
       this.$store.dispatch("uploadImg", fd);
+      this.editedPictureDialog = false;
     },
     onFileSelected(event) {
       this.selectedFile = event.target.files;
@@ -230,11 +231,18 @@ export default {
     },
     deleteimg(index, product) {
       if (confirm("Biztos törölni szeretnéd a képet?")) {
-        try {
-          this.$store.dispatch("deleteimg", { index, product });
-        } catch (err) {
-          console.log(err);
-        }
+        this.$store.dispatch("deleteimg", { index, product });
+        this.editedPictureDialog = false;
+      }
+    },
+    deleteProductGroup(group) {
+      if (confirm("Biztos törölni szeretnéd a termékcsaládot?")) {
+        this.$store.dispatch("deleteProductGroup", group);
+      }
+    },
+    deleteProduct(product) {
+      if (confirm("Biztos törölni szeretnéd ezt a terméket?")) {
+        this.$store.dispatch("deleteproduct", product);
       }
     },
     cancelDialog() {

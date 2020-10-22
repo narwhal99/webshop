@@ -52,5 +52,15 @@ export default {
     },
     editProductGroup(group) {
         return Api().patch('product-group', { group })
+    },
+    deleteProductGroup(group) {
+        return Api().delete('product-group', {
+            data: { group: group }
+        })
+    },
+    deleteProduct(product) {
+        return Api().delete('product', {
+            data: { product: product }
+        })
     }
 }
