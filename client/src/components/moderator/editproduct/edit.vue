@@ -146,6 +146,9 @@
         </v-col>
       </v-card>
     </v-dialog>
+    <v-snackbar v-model="snackbar" color="error">
+      {{ snackbartext }}
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -175,6 +178,8 @@ export default {
         { text: "Quantity", value: "quantity" },
         { text: "Actions", value: "actions", sortable: false },
       ],
+      snackbartext: "",
+      snackbar: false,
       selectedFile: 0,
       indexpictureselect: [],
       editedGroup: {},
@@ -235,9 +240,14 @@ export default {
         this.editedPictureDialog = false;
       }
     },
-    deleteProductGroup(group) {
+    async deleteProductGroup(group) {
       if (confirm("Biztos törölni szeretnéd a termékcsaládot?")) {
-        this.$store.dispatch("deleteProductGroup", group);
+        try {
+          await this.$store.dispatch("deleteProductGroup", group);
+        } catch (err) {
+          this.snackbar = true;
+          this.snackbartext = err;
+        }
       }
     },
     deleteProduct(product) {

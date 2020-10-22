@@ -33,12 +33,7 @@ const productSchema = new mongoose.Schema({
     }],
 }, { timestamps: true })
 
-productSchema.pre('remove', async function (next) {
-    this.productImage.map(async (image) => {
-        await unlinkAsync(image)
-    })
-    next()
-})
+
 
 productSchema.virtual('product_group', {
     ref: 'Product_group',
@@ -47,5 +42,22 @@ productSchema.virtual('product_group', {
     justOne: true
 })
 
+productSchema.pre('remove', async function (next) {
+
+    //remove from group ref
+    await this.populate({
+        path: "product_group",
+        model: "Product_group"
+    }).execPopulate()
+    const index = this.product_group.product.indexOf(this._id)
+    this.product_group.product.splice(index, 1)
+    await this.product_group.save()
+
+    //Img file delete
+    this.productImage.map(async (image) => {
+        await unlinkAsync(image)
+    })
+    next()
+})
 const Product = mongoose.model('Product', productSchema)
 module.exports = Product

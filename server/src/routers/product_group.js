@@ -81,9 +81,19 @@ router.patch('/product-group', async (req, res) => {
 router.delete('/product-group', async (req, res) => {
     try {
         const group = await Product_group.findOne({ _id: req.body.group._id })
-        await group.remove()
+        if (group.product.length == 0) {
+            await group.remove()
+        } else {
+            throw new Error('Unable to remove. Group is not empty!')
+        }
+        const product_group = await Product_group.find({}).populate({
+            path: "product",
+            model: "Product"
+        })
+        res.send(product_group)
     } catch (err) {
-        res.send(err)
+        // console.log(err)
+        res.status(400).send(err.message)
     }
 })
 

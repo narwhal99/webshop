@@ -91,7 +91,11 @@ router.delete('/product', async (req, res) => {
     try {
         const product = await Product.findOne({ _id: req.body.product._id })
         await product.remove()
-        res.send().status(201)
+        const product_group = await Product_group.find({}).populate({
+            path: "product",
+            model: "Product"
+        })
+        res.send(product_group)
     } catch (err) {
         res.send(err)
     }
@@ -127,7 +131,6 @@ router.patch('/image', upload.array('productImage', 5), async (req, res) => {
     } catch (err) {
         console.log(err)
     }
-    // productImage: req.files.map(photo => photo.path),
 })
 
 module.exports = router

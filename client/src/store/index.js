@@ -119,16 +119,16 @@ export default new Vuex.Store({
     },
     async deleteProductGroup({ commit }, group) {
       try {
-        await connectServices.deleteProductGroup(group)
-        commit('empty')
+        const resp = await connectServices.deleteProductGroup(group)
+        commit('auth_content', resp.data)
       } catch (err) {
-        console.log(err)
+        throw err.response.data
       }
     },
     async deleteproduct({ commit }, product) {
       try {
-        await connectServices.deleteProduct(product)
-        commit('empty')
+        const resp = await connectServices.deleteProduct(product)
+        commit('auth_content', resp.data)
       } catch (err) {
         console.log(err)
       }

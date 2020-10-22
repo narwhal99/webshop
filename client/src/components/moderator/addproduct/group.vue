@@ -31,6 +31,7 @@
                     v-model="group.price"
                     hide-details
                     outlined
+                    type="Number"
                     :rules="[required('Ár')]"
                   ></v-text-field>
                 </v-col>
