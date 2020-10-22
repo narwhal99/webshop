@@ -33,9 +33,6 @@
               <v-icon class="mr-3" @click="editStockbtn(item)"
                 >mdi-archive</v-icon
               >
-              <v-icon class="mr-3" @click="edigProductbtn(item)"
-                >mdi-pencil</v-icon
-              >
               <v-icon @click="deleteItem(item)">mdi-delete</v-icon>
             </template>
           </v-data-table>
@@ -44,7 +41,7 @@
     </v-data-table>
     <h1 v-else>Nincs adat</h1>
     <v-dialog v-model="editedGroupDialog" width="500">
-      <v-card dark>
+      <v-card>
         <v-card-title>Product group edit</v-card-title>
         <v-card-text>
           <v-row>
@@ -72,15 +69,29 @@
                 v-model="editedGroup.index"
               ></v-text-field>
             </v-col>
-            <v-col>
-              <v-text-field outlined label="Tags" v-model="editedGroup.tag">
-              </v-text-field>
-            </v-col>
+          </v-row>
+          <v-row>
+            <v-expansion-panels>
+              <v-expansion-panel>
+                <v-expansion-panel-header>Tags</v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  <v-list>
+                    <v-list-item v-for="tag in editedGroup.tag" :key="tag">
+                      <v-list-item-content>
+                        <v-text-field
+                          outlined
+                          :value="tag"
+                        ></v-text-field></v-list-item-content
+                    ></v-list-item>
+                  </v-list>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+            </v-expansion-panels>
           </v-row>
         </v-card-text>
         <v-card-actions>
           <v-col>
-            <v-btn color="success">Submit</v-btn>
+            <v-btn color="success" @click="submitproductgroup">Save</v-btn>
             <v-btn color="error" text @click="cancelDialog">Cancel</v-btn>
           </v-col>
         </v-card-actions>
@@ -189,6 +200,17 @@ export default {
     },
     onFileSelected(event) {
       this.selectedFile = event.target.files;
+    },
+    async submitproductgroup() {
+      try {
+        const resp = await this.$store.dispatch(
+          "productgroup_patch",
+          this.editedGroup
+        );
+        if (resp === 200) this.editedGroupDialog = false;
+      } catch (err) {
+        console.log(err);
+      }
     },
     formatDate(value) {
       return moment(value).locale("hu").format("llll");

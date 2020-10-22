@@ -49,5 +49,8 @@ export default {
                 'Content-Type': 'multipart/form-data'
             }
         })
+    },
+    editProductGroup(group) {
+        return Api().patch('product-group', { group })
     }
 }

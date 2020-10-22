@@ -107,6 +107,15 @@ export default new Vuex.Store({
       } catch (err) {
         console.log(err)
       }
+    },
+    async productgroup_patch({ commit }, group) {
+      try {
+        const resp = await connectServices.editProductGroup(group)
+        commit('auth_content', resp.data)
+        return resp.status
+      } catch (err) {
+        console.log(err)
+      }
     }
   },
 })
