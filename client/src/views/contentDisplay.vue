@@ -1,5 +1,5 @@
 <template>
-  <v-row justify="center">
+  <v-row justify="center" color="black">
     <template v-for="group in getContent">
       <v-col sm="6" md="3" v-for="product in group.product" :key="product._id">
         <productCard :group_name="group.name" :group_price="group.price" :product="product" />
