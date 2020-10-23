@@ -55,6 +55,9 @@ router.get('/product-group', async (req, res) => {
 //get group by tag
 router.get('/product-group/tag', async (req, res) => {
     try {
+        if (req.query.tag[1] == "all") {
+            req.query.tag.splice(1, 1)
+        }
         const products = await Product_group.find({ tag: { $all: req.query.tag } }).populate({
             path: "product",
             model: "Product"
